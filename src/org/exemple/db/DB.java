@@ -30,9 +30,21 @@ public class DB {
         return conn;
     }
 
+    public static void closeConnection(){
+        if (conn != null){
+
+            try{
+                conn.close();
+
+            }catch (SQLException e){
+                throw new BdException(e.getMessage());
+            }
+        }
+    }
+
     public static Properties LoadProperties(){
 
-        try(FileInputStream fs = new FileInputStream("db.properties")){
+        try(FileInputStream fs = new FileInputStream("bd.properties")){
             Properties props = new Properties();
             props.load(fs);
             return props;
