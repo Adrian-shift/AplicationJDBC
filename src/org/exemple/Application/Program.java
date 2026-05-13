@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class Program {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
 
         Connection conn = null;
         Statement st = null;
@@ -29,6 +29,36 @@ public class Program {
         }catch(SQLException e){
             e.printStackTrace();
 
+        }finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+            DB.closeConnection();
+        }
+
+
+        try{
+
+            conn = DB.getConnection();
+            st = conn.createStatement();
+            rs = st.executeQuery("select * from seller");
+
+            while(rs.next()){
+                System.out.println(rs.getInt("id") + " - "
+                        + rs.getString("Name") + " - "
+                        + rs.getString("Email") + " - "
+                        + rs.getDate("BirthDate") + " - "
+                        + rs.getDouble("BaseSalary") + " - "
+                        + rs.getInt("DepartmentId")
+                );
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+
+        }finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+            DB.closeConnection();
         }
 
     }
